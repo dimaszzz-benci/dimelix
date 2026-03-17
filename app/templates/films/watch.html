@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Nonton {{ film.title }} — Dimelix{% endblock %}
+
+{% block content %}
+
+    <h4 class="fw-bold mb-3">▶ {{ film.title }}</h4>
+
+    <!-- Video Player -->
+    <div class="ratio ratio-16x9 mb-4 shadow rounded overflow-hidden">
+        {% if film.video_url %}
+            {% if 'youtube.com' in film.video_url or 'youtu.be' in film.video_url %}
+                <!-- Kalau link YouTube, embed sebagai iframe -->
+                <iframe
+                    src="{{ film.video_url }}"
+                    allowfullscreen
+                    class="rounded"
+                ></iframe>
+            {% else %}
+                <!-- Kalau link video langsung (mp4, dll) -->
+                <video controls class="w-100 rounded">
+                    <source src="{{ film.video_url }}" type="video/mp4">
+                    Browser kamu tidak support video.
+                </video>
+            {% endif %}
+        {% else %}
+            <div class="d-flex align-items-center justify-content-center bg-secondary rounded">
+                <p class="text-secondary">Video belum tersedia</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Info singkat di bawah player -->
+    <div class="d-flex align-items-center gap-3">
+        <span class="badge bg-danger">{{ film.genre or 'Umum' }}</span>
+        <span class="text-secondary small">{{ film.year or '' }}</span>
+        <a href="{{ url_for('film.detail', film_id=film.id) }}"
+           class="text-secondary small ms-auto">
+            ← Kembali ke detail
+        </a>
+    </div>
+
+{% endblock %}
