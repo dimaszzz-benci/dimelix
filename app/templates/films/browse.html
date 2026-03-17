@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Browse — Dimelix{% endblock %}
+
+{% block content %}
+
+    <!-- Header -->
+    {% if keyword is defined and keyword %}
+        <h5 class="mb-4 text-secondary">
+            Hasil pencarian untuk: <span class="text-white">"{{ keyword }}"</span>
+        </h5>
+    {% else %}
+        <h4 class="mb-4 fw-bold">🎬 Semua Film & Anime</h4>
+    {% endif %}
+
+    <!-- Grid Film -->
+    {% if films %}
+        <div class="row row-cols-2 row-cols-md-4 g-3">
+            {% for film in films %}
+            <div class="col">
+                <a href="{{ url_for('film.detail', film_id=film.id) }}" class="text-decoration-none">
+                    <div class="card bg-secondary h-100 border-0 shadow film-card">
+
+                        <!-- Poster -->
+                        {% if film.poster_url %}
+                            <img
+                                src="{{ film.poster_url }}"
+                                class="card-img-top"
+                                alt="{{ film.title }}"
+                                style="height: 200px; object-fit: cover;"
+                            >
+                        {% else %}
+                            <!-- Placeholder kalau tidak ada poster -->
+                            <div class="d-flex align-items-center justify-content-center bg-dark"
+                                 style="height: 200px; font-size: 3rem;">
+                                🎬
+                            </div>
+                        {% endif %}
+
+                        <div class="card-body p-2">
+                            <p class="card-title text-white fw-bold small mb-1">{{ film.title }}</p>
+                            <span class="badge bg-danger small">{{ film.genre or 'Umum' }}</span>
+                            <span class="text-secondary small ms-1">{{ film.year or '' }}</span>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <!-- Kalau tidak ada film -->
+        <div class="text-center py-5">
+            <p style="font-size: 4rem;">🎭</p>
+            <h5 class="text-secondary">
+                {% if keyword is defined and keyword %}
+                    Film "{{ keyword }}" tidak ditemukan
+                {% else %}
+                    Belum ada film tersedia
+                {% endif %}
+            </h5>
+        </div>
+    {% endif %}
+
+{% endblock %}
