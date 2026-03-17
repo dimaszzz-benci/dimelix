@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Register — Dimelix{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <div class="card bg-secondary text-white shadow">
+            <div class="card-body p-4">
+                <h4 class="text-center mb-4 fw-bold">Buat Akun Dimelix</h4>
+
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input
+                            type="text"
+                            name="username"
+                            class="form-control bg-dark text-white border-secondary"
+                            placeholder="username kamu"
+                            required
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            class="form-control bg-dark text-white border-secondary"
+                            placeholder="email@kamu.com"
+                            required
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            class="form-control bg-dark text-white border-secondary"
+                            placeholder="min. 8 karakter"
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="btn btn-danger w-100 fw-bold">
+                        Daftar Sekarang
+                    </button>
+                </form>
+
+                <p class="text-center mt-3 small">
+                    Udah punya akun?
+                    <a href="{{ url_for('auth.login') }}" class="text-danger">Login di sini</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
