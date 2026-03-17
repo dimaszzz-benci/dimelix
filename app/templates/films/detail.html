@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ film.title }} — Dimelix{% endblock %}
+
+{% block content %}
+<div class="row">
+
+    <!-- Poster -->
+    <div class="col-md-3 mb-4">
+        {% if film.poster_url %}
+            <img
+                src="{{ film.poster_url }}"
+                class="img-fluid rounded shadow"
+                alt="{{ film.title }}"
+            >
+        {% else %}
+            <div class="d-flex align-items-center justify-content-center bg-secondary rounded"
+                 style="height: 300px; font-size: 5rem;">
+                🎬
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Info Film -->
+    <div class="col-md-9">
+        <h2 class="fw-bold">{{ film.title }}</h2>
+
+        <div class="mb-3">
+            <span class="badge bg-danger me-2">{{ film.genre or 'Umum' }}</span>
+            <span class="text-secondary">{{ film.year or 'Tahun tidak diketahui' }}</span>
+        </div>
+
+        <p class="text-secondary">
+            {{ film.description or 'Tidak ada deskripsi.' }}
+        </p>
+
+        <!-- Tombol Tonton -->
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('film.watch', film_id=film.id) }}"
+               class="btn btn-danger btn-lg fw-bold">
+                ▶ Tonton Sekarang
+            </a>
+        {% else %}
+            <a href="{{ url_for('auth.login') }}"
+               class="btn btn-outline-danger btn-lg">
+                🔒 Login untuk Menonton
+            </a>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}
