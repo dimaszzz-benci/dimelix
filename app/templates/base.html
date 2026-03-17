@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dimelix{% endblock %}</title>
+
+    <!-- Bootstrap 5 untuk styling cepat -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS kita -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-dark text-white">
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black px-4">
+        <a class="navbar-brand fw-bold text-danger fs-3" href="{{ url_for('film.browse') }}">
+            🎬 DIMELIX
+        </a>
+
+        <div class="d-flex ms-auto align-items-center gap-3">
+            <!-- Form Search -->
+            <form action="{{ url_for('film.search') }}" method="GET" class="d-flex">
+                <input
+                    type="text"
+                    name="q"
+                    class="form-control form-control-sm bg-secondary text-white border-0"
+                    placeholder="Cari film..."
+                    value="{{ keyword if keyword is defined else '' }}"
+                >
+                <button class="btn btn-danger btn-sm ms-1" type="submit">🔍</button>
+            </form>
+
+            <!-- Login / Logout -->
+            {% if current_user.is_authenticated %}
+                <span class="text-secondary small">Hi, {{ current_user.username }}!</span>
+                {% if current_user.is_admin %}
+                    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-warning btn-sm">Admin</a>
+                {% endif %}
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-light btn-sm">Logout</a>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}" class="btn btn-danger btn-sm">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- FLASH MESSAGES (notifikasi) -->
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- KONTEN UTAMA — diisi tiap halaman -->
+    <main class="container my-4">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="text-center text-secondary py-4 border-top border-secondary mt-5">
+        <small>© 2024 Dimelix — All rights reserved</small>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
